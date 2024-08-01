@@ -1,24 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
+import Login from "./component/login/Login";
+import "./App.css";
+import HomePage from "./component/home/HomePage";
+import { ThemeProvider } from "@emotion/react";
+import { CssBaseline } from "@mui/material";
+import { ColorModeContext, useMode } from "./theme";
+import Game from "./component/game/Game";
+import { Navigate, Route, Routes } from "react-router-dom";
+import ErrorPage from "./component/errorPages/ErrorPage";
+import MustLogin from "./component/errorPages/MustLogin";
 
 function App() {
+  const [theme, colorMode] = useMode();
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ColorModeContext.Provider value={colorMode}>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <Routes>
+          <Route path="/" element={<Login />} />
+          <Route path="/home" element={<HomePage />} />
+          <Route path="/game/:gameId" element={<Game />} />
+          <Route path="*" element={<ErrorPage />} />
+        </Routes>
+      </ThemeProvider>
+    </ColorModeContext.Provider>
   );
 }
 
